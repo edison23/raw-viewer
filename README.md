@@ -16,6 +16,8 @@ The interface is composed of multiple files. Each has some purpose, some of whic
 
 `img/network`: contains images used as navigation buttons in the graph representation
 
+`svg-icons`: folder containing SVG icons used in the left sidebar (search, graph and text visualizations)
+
 `akrobat-webfont`: a font for the interface
 
 ## API
