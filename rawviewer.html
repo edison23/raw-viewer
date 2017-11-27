@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>RAW viewer for wordnets.</title>
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/rawviewer.css" rel="stylesheet" type="text/css" />
+		<link href="css/vis.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/vis-network.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
+		<link href="akrobat-webfont/akrobat-font.css" rel="stylesheet" type="text/css" />
+		
+		<!-- the main script to draw data to the interface -->
+		<script src="scripts/rawviewer.js" type="text/javascript"></script>
+		<!-- jQuery and Bootstrap -->
+		<script src="scripts/jquery-3.1.1.min.js" type="text/javascript"></script>
+		<script src="scripts/bootstrap-select.min.js" type="text/javascript"></script>
+		<!-- visualization script -->
+		<script src="scripts/vis.min.js" type="text/javascript"></script>
+		<!-- URI is for handling the URL -->
+		<script src="scripts/URI.js" type="text/javascript"></script>
+		<!-- scrollbars -->
+		<script src="scripts/perfect-scrollbar.js" type="text/javascript"></script>
+		<script src="scripts/perfect-scrollbar.jquery.js" type="text/javascript"></script>
+		<!-- tether is for the tooltips -->
+		<script src="scripts/tether.min.js" type="text/javascript"></script>
+		<script src="scripts/bootstrap.min.js" type="text/javascript"></script>
+		<!-- <script src="https://use.fontawesome.com/7773faa986.js"></script> -->
+		<script>
+			$(document).ready( function() {
+				main()
+			});
+		</script>
+	</head>
+	<body>
+
+		<div class="container" id="container">
+			<!-- header -->
+			<div class="rowBlah" id="header">
+				<a href="./dynamic.html">
+					<div class="col-12">
+						<h1 class="nii c-acc">RAW viewer <small class="c-std">Responsivity Aware Wordnet viewer</small></h1>
+						<footer class="blockquote-footer">Inspired by failures of others.</footer>
+					</div>
+				</a>
+				
+			</div>
+
+			<!-- wrapper row -->
+			<div class="rowBlah" id="wrapper">
+
+				<!-- sidebar -->
+				<div class="col col-sm-12 col-md-4 col-lg-3" id="sidebar">
+
+					<!-- settings buttons -->
+					<div class="" id="settings">
+						<a href="?vis=text" id="text-rep" class="btn btn-primary" data-toggle="tooltip" title="Textual"></a>
+						<a href="?vis=graph" id="dendr-rep" class="btn btn-primary" data-toggle="tooltip" title="Tree"></a>
+						<!-- <a href="#" id="about" class="btn btn-primary" data-toggle="tooltip" title="About"></a> -->
+					</div>
+
+					<form id="search">
+						<div class="input-group">
+							<input id="search-input" type="text" placeholder="Search for a word" class="form-control">
+							<span class="input-group-btn">
+								<button id="search-butt" type="submit" class="btn btn-default"><span class="no-style">🔎 Search</span></button>
+							</span>
+							<!-- <button id="search-butt" type="submit" class="btn btn-primary" onclick='onSearchButt()'></button> -->
+						</div>
+						<div id="d-src-sel">
+							<!-- dynamically filled selection of resources, see config for list of them -->
+							<select id="data-source-selection" title="Select a WordNet to use." ></select>
+						</div>
+					</form>
+					
+					<div id="wordMeanings-alt" class="schrodinger"></div>	
+					<div id="wordMeanings" class="kitty">
+						<!-- block with found synsets -->
+						<h2 class="yon b600 c-acc">Found synonym rings (synsets):</h2>
+						<div class="list-group" id="synsets"></div>
+					</div>
+				</div>
+				<div class="col col-sm-12 col-md-8 col-lg-9" id="main">
+					<!-- block with the tree (graph representaion) -->
+					<div id="WNTree" class="kitty">
+						<div id="stromcik"></div>
+						<div id="loadingBar">
+				            <div id="loadingBarText">0 %</div>
+			                <div id="loadingBarBar">
+			                	<div id="loadingBarInner"></div>
+			                </div>
+					    </div>
+					</div>
+					<!-- block with messeges for a user -->
+					<div id="theContent-alt" class="schrodinger">
+						<div id="ajaxLoader" class="loader stateNote hidden"></div>
+						<div id="ajaxError" class="stateNote hidden">Something went awry.<br><small>Ajax threw an error. Refer to console log for further details.</small></div>
+						<div id="wordNotFound" class="stateNote hidden">What you've searched for is not a word.<br><small>At least not from wordnet's point of view.</small></div>
+						<div id="emptySearch" class="stateNote hidden">Start by searching for a word.</div>
+					</div>
+
+					<!-- main content (right part of the interface) -->
+					<div id="theContent" class="kitty">
+						<div id="wordStuff">
+							<h2 class="ichi c-acc b400" id="wordMain">
+								<!-- kolo -->
+							</h2>
+							<p id="wordDef"></p>
+							<!-- blocks with synset details -->
+							<div class="rowBlah">
+								<h3 class="go c-acc">
+									Paths to word
+								</h3>
+								<div  id="paths"></div>
+							</div>
+							<div class="rowBlah" id="wordProp">
+								<h3 class="go c-acc">
+									Word properties
+								</h3>
+								<div class="properties">
+									<div class="col-sm-3 col-xs-6" id="wordPOS"></div>
+									<div class="col-sm-3 col-xs-6" id="wordID"></div>
+									<!-- if something in properties is missing, we need nonempty block to align lower divs -->
+									<span>&nbsp;</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- blocks with semantic relations of the synset -->
+						<div class="rowBlah">
+							<div class="col-xs-12 kitty" id="semGroups">
+								<h3 class="san c-acc b600">Semantic relations</h3>
+								<div class="row"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,20 @@
+{
+	"visualizations": 
+		["text", "graph"],
+	"sources": 
+		[
+			["Czech wordnet", "wncz"],
+			["English wordnet", "wneng"],
+			["French wordnet", "wnfre"],
+			["Greek wordnet", "wngre"],
+			["Korean wordnet", "wnkor"],
+			["Polish wordnet", "wnpolwr"],
+			["Slovenian wordnet", "wnslv"],
+			["Turkish wordnet", "wntur"]
+		],
+	"server":
+		[
+			"https://nlp.fi.muni.cz/~xrambous/fw/abulafia/", "?action=jsonvis&query="
+		]
+
+}
