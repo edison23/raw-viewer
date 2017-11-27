@@ -1,6 +1,6 @@
 # RAW viewer
 
-*Responsivity Aware Wordnet viewer* is an interface for data of wordnets. It is built to help people use wordnets from various kinds of devices from computers to smartphones, thus it runs in a web browsers and doesn't require Java or Flash, only JavaScript. The interface allows users to search various wordnets by word or synset ID, to view found data in text mode or in graphical representation and even to search a particular synset across multiple wordnets.
+[*Responsivity Aware Wordnet viewer*](https://nlp.fi.muni.cz/~x399040/raw-viewer/rawviewer.html) is an interface for data of wordnets. It is built to help people use wordnets from various kinds of devices from computers to smartphones, thus it runs in a web browsers and doesn't require Java or Flash, only JavaScript. The interface allows users to search various wordnets by word or synset ID, to view found data in text mode or in graphical representation and even to search a particular synset across multiple wordnets.
 
 ## Interface files
 
@@ -20,7 +20,7 @@ The interface is composed of multiple files. Each has some purpose, some of whic
 
 ## API
 
-The interface is built with support for an API which returns JSON data as an answer to a query from user. The requests are sent and retrieved as a AJAX request and the answer must be structured in a compatible way as the following example of an answer (strings after doulble slashes are comments for a purpose of this Readme:
+The interface is built with support for an API which returns JSON data as an answer to a query from a user. The requests are sent and retrieved as an AJAX request and the answer must be structured in a compatible way as the following example of an answer (strings after doulble slashes are comments for a purpose of this Readme:
 
 	[
 	    { // first found synset
@@ -78,11 +78,11 @@ The interface is built with support for an API which returns JSON data as an ans
 
 ## Configuration
 
-There is one configuration file names `config.json` where you can set multiple settings. When editing this file be careful to always provide valid JSON file (ie. e.g. no comments), otherwise the interface will fail silently and won't work.
+There is one configuration file named `config.json` where you can set multiple settings. When editing this file be careful to always provide valid JSON file (ie. e.g. no comments), otherwise the interface will fail silently and won't work.
 
 ### Server
 
-Under the key ``server`` you can set the URL of the API where the requests for data must be sent. Currently the URL is split to two parts as there are two variables delimited by non-variable string. 
+Under the key ``server`` you can set the URL of the API where the requests for data must be sent. Currently the URL is split to two parts as there are two variables (a resource and a searched term) delimited by a non-variable string (*second part*). 
 
 	"server":
 		[
@@ -97,7 +97,7 @@ Under the key `visualizations` you can find and set available visualization mode
 
 ### Resources
 
-Under the key ``sources`` is a list of wordnets that are to be displayed in the interface for user to search words in. Each item has two parts, first is a name which is to be displayed, second is a URL string which is understood by the API.
+Under the key ``sources`` is a list of wordnets that are to be displayed in the interface for a user to search words in. Each item has two parts, first is a name which is to be displayed, second is a URL string which is understood by the API.
 
 	"sources": 
 		[
